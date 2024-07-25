@@ -113,7 +113,14 @@ resource azure_storage_account_function 'Microsoft.Storage/storageAccounts@2021-
     name: 'Standard_LRS'
   }
   properties: {
-    accessTier: 'Hot'
+    allowBlobPublicAccess: false
+    minimumTlsVersion: 'TLS1_2'
+    isHnsEnabled: true
+    supportsHttpsTrafficOnly: true
+    networkAcls: {
+      defaultAction: 'Allow'
+      bypass: 'AzureServices, Logging, Metrics'
+    }
   }
 }
 
