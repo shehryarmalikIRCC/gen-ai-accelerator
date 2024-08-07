@@ -1,0 +1,19 @@
+{
+    "scriptFile": "__init__.py",
+    "bindings": [
+        {
+            "name": "inputBlob",
+            "type": "blobTrigger",
+            "direction": "in",
+            "path": "raw/{name}",
+            "connection": "SECONDARY_STORAGE_ACCOUNT_CONNECTION_STRING"
+        },
+        {
+            "name": "outputBlob",
+            "type": "blob",
+            "direction": "out",
+            "path": "intermediate/{name}",
+            "connection": "SECONDARY_STORAGE_ACCOUNT_CONNECTION_STRING"
+        }
+    ]
+}

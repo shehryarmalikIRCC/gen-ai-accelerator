@@ -1,14 +1,14 @@
 param location string
 param projectcode string
 
-var keyVaultName = '${projectcode}-z-dev-kv'
+var keyVaultName = '${projectcode}-z-dev-kv2'
 var searchName = '${projectcode}-z-dev-ais'
 var openAIName = '${projectcode}-z-dev-oai'
 var cosmosName = '${projectcode}-z-dev-csdb'
 var storageAccountName = '${projectcode}zdevsa'
 var appServicePlanName = '${projectcode}-z-dev-asp'
 var functionAppName = '${projectcode}-z-dev-func'
-var storageAccountFunctionName = '${toLower('${projectcode}${uniqueString(resourceGroup().id, functionAppName)}func')}' 
+var storageAccountFunctionName = '${toLower('${projectcode}${uniqueString(resourceGroup().id, functionAppName)}func')}'
 var appInsightsName = '${projectcode}-z-dev-ai'
 
 resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
@@ -137,15 +137,26 @@ resource azure_function_app 'Microsoft.Web/sites@2021-02-01' = {
   name: functionAppName
   location: location
   kind: 'functionapp'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: azure_app_service_plan.id
     httpsOnly: true
     siteConfig: {
-      linuxFxVersion: 'PYTHON|3.11' 
+      linuxFxVersion: 'PYTHON|3.11'
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
           value: 'DefaultEndpointsProtocol=https;AccountName=${azure_storage_account_function.name};AccountKey=${listKeys(azure_storage_account_function.id, '2021-02-01').keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${azure_storage_account_function.name};AccountKey=${listKeys(azure_storage_account_function.id, '2021-02-01').keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: toLower(functionAppName)
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -159,7 +170,13 @@ resource azure_function_app 'Microsoft.Web/sites@2021-02-01' = {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: app_insights.properties.InstrumentationKey
         }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '0' 
+        }
       ]
+      ftpsState: 'FtpsOnly'
+      minTlsVersion: '1.2'
     }
   }
 }
