@@ -10,3 +10,5 @@ azure-search-documents
 requests
 pymupdf
 azure-identity
+azure-cosmos
+python-docx

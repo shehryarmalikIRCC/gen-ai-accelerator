@@ -1,0 +1,25 @@
+{
+    "scriptFile": "__init__.py",
+    "bindings": [
+        {
+            "type": "cosmosDBTrigger",
+            "name": "inputDocument",  
+            "direction": "in",
+            "leaseContainerName": "leases",
+            "connection": "COSMOS_DB_CONNECTION_STRING",
+            "databaseName": "KnowledgeScansDB",
+            "containerName": "KnowledgeScansContainer",
+            "createLeaseContainerIfNotExists": true
+        },
+        {
+            "type": "cosmosDB",
+            "name": "outputDocument",
+            "direction": "out",
+            "connection": "COSMOS_DB_CONNECTION_STRING",
+            "databaseName": "KnowledgeScansDB",
+            "collectionName": "docxContainer"
+        }
+    ]
+}
+
+
