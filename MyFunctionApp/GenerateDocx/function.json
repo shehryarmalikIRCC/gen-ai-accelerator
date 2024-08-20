@@ -3,13 +3,14 @@
     "bindings": [
         {
             "type": "cosmosDBTrigger",
-            "name": "inputDocument",  
+            "name": "inputDocument",
             "direction": "in",
             "leaseContainerName": "leases",
             "connection": "COSMOS_DB_CONNECTION_STRING",
             "databaseName": "KnowledgeScansDB",
             "containerName": "KnowledgeScansContainer",
-            "createLeaseContainerIfNotExists": true
+            "createLeaseContainerIfNotExists": true,
+            "partitionKey": "/id" 
         },
         {
             "type": "cosmosDB",
@@ -17,9 +18,8 @@
             "direction": "out",
             "connection": "COSMOS_DB_CONNECTION_STRING",
             "databaseName": "KnowledgeScansDB",
-            "collectionName": "docxContainer"
+            "containerName": "docxContainer",
+            "partitionKey": "/id"  
         }
     ]
 }
-
-

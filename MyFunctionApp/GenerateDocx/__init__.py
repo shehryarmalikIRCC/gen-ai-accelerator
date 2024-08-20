@@ -2,10 +2,11 @@ import os
 import uuid
 import logging
 import base64
-import azure.functions as func  # Ensure this is imported
+import azure.functions as func
 from docx import Document
 
 def fetch_scan_data_from_cosmos(scan_data):
+    # You can include additional processing or transformation here if needed
     return scan_data
 
 def generate_docx_from_knowledge_scan(scan_data):
