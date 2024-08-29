@@ -10,7 +10,7 @@
             "databaseName": "KnowledgeScansDB",
             "containerName": "KnowledgeScansContainer",
             "createLeaseContainerIfNotExists": true,
-            "partitionKey": "/id" 
+            "partitionKey": "/id"
         },
         {
             "type": "cosmosDB",
@@ -19,7 +19,14 @@
             "connection": "COSMOS_DB_CONNECTION_STRING",
             "databaseName": "KnowledgeScansDB",
             "containerName": "docxContainer",
-            "partitionKey": "/id"  
+            "partitionKey": "/id"
+        },
+        {
+            "name": "outputBlob",
+            "type": "blob",
+            "direction": "out",
+            "path": "curated/filename.docx",  
+            "connection": "SECONDARY_STORAGE_ACCOUNT_CONNECTION_STRING"
         }
     ]
 }
