@@ -20,22 +20,32 @@ jobs:
         with:
           submodules: true
           lfs: false
+      - name: Set Environment Variables
+        run: |
+            echo "export EMBEDDING_API_URL=${{ secrets.EMBEDDING_API_URL }}" >> $GITHUB_ENV
+            echo "export EMBEDDING_API_KEY=${{ secrets.EMBEDDING_API_KEY }}" >> $GITHUB_ENV
+            echo "export SEARCH_API_URL=${{ secrets.SEARCH_API_URL }}" >> $GITHUB_ENV
+            echo "export SEARCH_API_KEY=${{ secrets.SEARCH_API_KEY }}" >> $GITHUB_ENV
+            echo "export GENERATE_API_URL=${{ secrets.GENERATE_API_URL }}" >> $GITHUB_ENV
+            echo "export GENERATE_API_KEY=${{ secrets.GENERATE_API_KEY }}" >> $GITHUB_ENV
+  
+      - name: Replace Environment Variables in Angular
+        run: |
+            sed -i 's#embeddingApiUrl: ""#embeddingApiUrl: "'${{ secrets.EMBEDDING_API_URL }}'"#g' ./frontend/src/environments/environment.prod.ts
+            sed -i 's#embeddingApiKey: ""#embeddingApiKey: "'${{ secrets.EMBEDDING_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
+            sed -i 's#searchApiUrl: ""#searchApiUrl: "'${{ secrets.SEARCH_API_URL }}'"#g' ./frontend/src/environments/environment.prod.ts
+            sed -i 's#searchApiKey: ""#searchApiKey: "'${{ secrets.SEARCH_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
+            sed -i 's#generateSynthesisApiUrl: ""#generateSynthesisApiUrl: "'${{ secrets.GENERATE_API_URL }}'"#g' ./frontend/src/environments/environment.prod.ts
+            sed -i 's#generateSynthesisApiCode: ""#generateSynthesisApiCode: "'${{ secrets.GENERATE_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
       - name: Install Dependencies
         run: |
           cd frontend
           npm install 
       - name: Build Angular App
-        env:
-          EMBEDDING_API_URL: ${{secrets.EMBEDDING_API_URL}}
-          EMBEDDING_API_KEY: ${{secrets.EMBEDDING_API_KEY}}
-          SEARCH_API_URL: ${{secrets.SEARCH_API_URL}}
-          SEARCH_API_KEY: ${{secrets.SEARCH_API_KEY}}
-          GENERATE_API_URL: ${{secrets.GENERATE_API_URL}}
-          GENERATE_API_KEY: ${{secrets.GENERATE_API_KEY}}
         run: |
           cd frontend
           npm install -g @angular/cli
-          ng build
+          ng build --configuration=production
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
