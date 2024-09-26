@@ -1,0 +1,84 @@
+<div class="chat-container">
+  <div class="title"><h1>IRCC Document AI Search</h1></div>
+  <!-- Messages Area -->
+  <div class="messages">
+    <div class="message ai-message">
+      Hello! I can help you with creating synthesis reports. Enter your prompt
+      below!
+    </div>
+    <div class="message user-message" *ngFor="let msg of messages">
+      {{ msg.content }}
+    </div>
+    <div class="message ai-message" *ngIf="documents.length > 0">
+      <table class="documents-table">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Published Date</th>
+            <th>File Name</th>
+            <th>Summary</th>
+            <th>Relevance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of documents">
+            <td><input type="checkbox" [(ngModel)]="doc.selected" /></td>
+            <td>{{ doc.publishedDate }}</td>
+            <td>{{ doc.fileName }}</td>
+            <td>{{ doc.summary }}</td>
+            <td [ngClass]="getRelevanceClass(doc.relevance)">
+              {{ doc.relevance }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="message ai-message" *ngIf="documents.length > 0">
+      I have extracted the related information and presented it in the table
+      above. Please select record(s) you would like to synthesis
+    </div>
+
+     <!-- New AI Message Component for Synthesis Response -->
+    <div class="message ai-message" *ngIf="synthesisResponse">
+      <p>
+        <strong>General Notes:</strong> {{ synthesisResponse.general_notes }}
+      </p>
+      <p>
+        <strong>Keywords:</strong> {{ synthesisResponse.keywords.join(', ') ||
+        'N/A' }}
+      </p>
+      <p>
+        <strong>Resources Searched:</strong> {{
+        synthesisResponse.resources_searched.join(', ') || 'N/A' }}
+      </p>
+      <div *ngFor="let summary of synthesisResponse.combined_summaries">
+        <p><strong>File Name:</strong> {{ summary.pdf_name }}</p>
+        <p><strong>Summary:</strong> {{ summary.summary }}</p>
+      </div>
+    </div>
+    <!-- Generate Synthesis Button -->
+    <!-- Buttons Container -->
+    <div *ngIf="searchPerformed" class="synthesis-button-container">
+      <button class="synthesis-button" (click)="onGenerateSynthesis()">
+        Generate Synthesis
+      </button>
+      <button class="synthesis-button" (click)="onNewSearch()">
+        New Search
+      </button>
+    </div>
+
+    <div #messagesEnd></div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="input-container" *ngIf="!searchPerformed">
+    <input
+      class="chat-input"
+      [(ngModel)]="query"
+      placeholder="Type your message..."
+      (keyup.enter)="onSend()"
+    />
+    <button class="send-button" (click)="onSend()">Send</button>
+  </div>
+</div>
