@@ -37,6 +37,10 @@ jobs:
             sed -i 's#searchApiKey: ""#searchApiKey: "'${{ secrets.SEARCH_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
             sed -i 's#generateSynthesisApiUrl: ""#generateSynthesisApiUrl: "'${{ secrets.GENERATE_API_URL }}'"#g' ./frontend/src/environments/environment.prod.ts
             sed -i 's#generateSynthesisApiCode: ""#generateSynthesisApiCode: "'${{ secrets.GENERATE_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
+      
+      - name: Output environment.prod.ts for debugging
+        run: cat ./frontend/src/environments/environment.prod.ts
+          
       - name: Install Dependencies
         run: |
           cd frontend
