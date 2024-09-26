@@ -16,12 +16,12 @@ interface Document {
   providedIn: "root",
 })
 export class SearchService {
-  private embeddingApiUrl = process.env["EMBEDDING_API_URL"];
-  private embeddingApiKey = process.env["EMBEDDING_API_KEY"];
-  private searchApiUrl = process.env["SEARCH_API_URL"];
-  private searchApiKey = process.env["SEARCH_API_KEY"];
-  private generateSynthesisApiUrl = process.env["GENERATE_API_URL"];
-  private generateSynthesisApiCode = process.env["GENERATE_API_KEY"];
+  private embeddingApiUrl = (window as any).EMBEDDING_API_URL;
+  private embeddingApiKey = (window as any).EMBEDDING_API_KEY;
+  private searchApiUrl = (window as any).SEARCH_API_URL;
+  private searchApiKey = (window as any).SEARCH_API_KEY;
+  private generateSynthesisApiUrl = (window as any).GENERATE_API_URL;
+  private generateSynthesisApiCode = (window as any).GENERATE_API_KEY;
 
   constructor(private http: HttpClient) {}
 
