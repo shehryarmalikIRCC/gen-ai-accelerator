@@ -32,6 +32,7 @@ export class SearchComponent {
   documents: Document[] = [];
   searchPerformed: boolean = false;
   synthesisResponse: any;
+  isLoading: boolean = false;
 
   constructor(private searchService: SearchService) {}
 
@@ -59,22 +60,29 @@ export class SearchComponent {
   }
 
   onGenerateSynthesis(): void {
+    this.isLoading = true; // Start loading
     const selectedDocumentIds = this.documents
       .filter((doc) => doc.selected)
       .map((doc) => doc.id);
-
+  
     const requestBody = {
       query: this.messages.find((msg) => msg.sender === "user")?.content || "",
       documents: selectedDocumentIds,
     };
-
-    this.searchService.generateSynthesis(requestBody).subscribe((response) => {
-      console.log("Synthesis Response:", response);
-      this.synthesisResponse = response;
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 0);
-    });
+  
+    this.searchService.generateSynthesis(requestBody).subscribe(
+      (response) => {
+        this.synthesisResponse = response;
+        this.isLoading = false; // Stop loading
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 0);
+      },
+      (error) => {
+        console.error("Error generating synthesis:", error);
+        this.isLoading = false; // Stop loading even if there's an error
+      }
+    );
   }
 
   @ViewChild("messagesEnd") private messagesEnd!: ElementRef;

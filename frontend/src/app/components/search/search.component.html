@@ -38,9 +38,13 @@
       I have extracted the related information and presented it in the table
       above. Please select record(s) you would like to synthesis
     </div>
+    <div class="message ai-message" *ngIf="isLoading">
+      <p>Loading synthesis, please wait...</p>
+      <div class="spinner"></div>
+    </div>
 
-     <!-- New AI Message Component for Synthesis Response -->
-    <div class="message ai-message" *ngIf="synthesisResponse">
+    <!-- New AI Message Component for Synthesis Response -->
+    <div class="message ai-message" *ngIf="!isLoading && synthesisResponse">
       <p>
         <strong>General Notes:</strong> {{ synthesisResponse.general_notes }}
       </p>
