@@ -17,13 +17,13 @@ interface Document {
   providedIn: "root",
 })
 export class SearchService {
-  private embeddingApiUrl = process.env['EMBEDDING_API_URL'] || '' 
-  private embeddingApiKey = process.env['EMBEDDING_API_KEY'] || ''
-  private searchApiUrl = process.env['SEARCH_API_URL'] || '' 
-  private searchApiKey = process.env['SEARCH_API_KEY'] || '' 
-  private generateSynthesisApiUrl = process.env['GENERATE_API_URL'] || ''
-  private generateSynthesisApiCode = process.env['GENERATE_API_KEY'] || '' 
-
+  private embeddingApiUrl = environment.embeddingApiUrl;
+  private embeddingApiKey = environment.embeddingApiKey;
+  private searchApiUrl = environment.searchApiUrl;
+  private searchApiKey = environment.searchApiKey;
+  private generateSynthesisApiUrl = environment.generateSynthesisApiUrl;
+  private generateSynthesisApiCode = environment.generateSynthesisApiCode;
+  
   constructor(private http: HttpClient) {}
 
   // SearchDocument mock API
