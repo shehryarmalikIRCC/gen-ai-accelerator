@@ -14,6 +14,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    environment: prod
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,6 +25,13 @@ jobs:
           cd frontend
           npm install 
       - name: Build Angular App
+        env:
+          EMBEDDING_API_URL: ${{secrets.EMBEDDING_API_URL}}
+          EMBEDDING_API_KEY: ${{secrets.EMBEDDING_API_KEY}}
+          SEARCH_API_URL: ${{secrets.SEARCH_API_URL}}
+          SEARCH_API_KEY: ${{secrets.SEARCH_API_KEY}}
+          GENERATE_API_URL: ${{secrets.GENERATE_API_URL}}
+          GENERATE_API_KEY: ${{secrets.GENERATE_API_KEY}}
         run: |
           cd frontend
           npm install -g @angular/cli
