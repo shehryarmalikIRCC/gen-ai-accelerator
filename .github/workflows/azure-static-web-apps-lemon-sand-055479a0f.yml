@@ -30,17 +30,30 @@ jobs:
             echo "export GENERATE_API_KEY=${{ secrets.GENERATE_API_KEY }}" >> $GITHUB_ENV
   
       - name: Replace Environment Variables in Angular
+        env:
+          EMBEDDING_API_URL: ${{ secrets.EMBEDDING_API_URL }}
+          EMBEDDING_API_KEY: ${{ secrets.EMBEDDING_API_KEY }}
+          SEARCH_API_URL: ${{ secrets.SEARCH_API_URL }}
+          SEARCH_API_KEY: ${{ secrets.SEARCH_API_KEY }}
+          GENERATE_API_URL: ${{ secrets.GENERATE_API_URL }}
+          GENERATE_API_KEY: ${{ secrets.GENERATE_API_KEY }}
         run: |
-            sed -i 's#embeddingApiUrl: ""#embeddingApiUrl: "'${{ secrets.EMBEDDING_API_URL }}'"#g' ./frontend/src/environments/environment.prod.ts
-            sed -i 's#embeddingApiKey: ""#embeddingApiKey: "'${{ secrets.EMBEDDING_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
-            sed -i 's#searchApiUrl: ""#searchApiUrl: "'${{ secrets.SEARCH_API_URL }}'"#g' ./frontend/src/environments/environment.prod.ts
-            sed -i 's#searchApiKey: ""#searchApiKey: "'${{ secrets.SEARCH_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
-            sed -i 's#generateSynthesisApiUrl: ""#generateSynthesisApiUrl: "'${{ secrets.GENERATE_API_URL }}'"#g' ./frontend/src/environments/environment.prod.ts
-            sed -i 's#generateSynthesisApiCode: ""#generateSynthesisApiCode: "'${{ secrets.GENERATE_API_KEY }}'"#g' ./frontend/src/environments/environment.prod.ts
-      
-      - name: Output environment.prod.ts for debugging
-        run: cat ./frontend/src/environments/environment.prod.ts
-          
+          sed -i "s#embeddingApiUrl: ''#embeddingApiUrl: '$EMBEDDING_API_URL'#g" ./frontend/src/environments/environment.prod.ts
+          sed -i "s#embeddingApiKey: ''#embeddingApiKey: '$EMBEDDING_API_KEY'#g" ./frontend/src/environments/environment.prod.ts
+          sed -i "s#searchApiUrl: ''#searchApiUrl: '$SEARCH_API_URL'#g" ./frontend/src/environments/environment.prod.ts
+          sed -i "s#searchApiKey: ''#searchApiKey: '$SEARCH_API_KEY'#g" ./frontend/src/environments/environment.prod.ts
+          sed -i "s#generateSynthesisApiUrl: ''#generateSynthesisApiUrl: '$GENERATE_API_URL'#g" ./frontend/src/environments/environment.prod.ts
+          sed -i "s#generateSynthesisApiCode: ''#generateSynthesisApiCode: '$GENERATE_API_KEY'#g" ./frontend/src/environments/environment.prod.ts
+      - name: Verify Environment Variables
+        run: |
+          echo "Embedding API URL is set."
+          echo "Search API URL is set."
+          echo "Generate API URL is set."
+        env:
+          EMBEDDING_API_URL: ${{ secrets.EMBEDDING_API_URL }}
+          SEARCH_API_URL: ${{ secrets.SEARCH_API_URL }}
+          GENERATE_API_URL: ${{ secrets.GENERATE_API_URL }}
+        
       - name: Install Dependencies
         run: |
           cd frontend
