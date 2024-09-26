@@ -19,7 +19,14 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - run: npm install
+      - name: Install Dependencies
+        run: |
+          cd frontend
+          npm install 
+      - name: Build Angular App
+        run: |
+          cd frontend
+          npm install 
       - run: ng build
       - name: Build And Deploy
         id: builddeploy
