@@ -42,7 +42,7 @@ jobs:
           cd frontend
           npm install
           npm install -g @angular/cli
-          npm build
+          ng build
 
       - name: Zip artifact for deployment
         run: |
