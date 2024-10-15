@@ -121,3 +121,6 @@ Once the Web App is created, add the following environment variables:
 4. Commit the changes and push to your repository. The GitHub Actions workflow will automatically run and deploy your Angular app to the Azure Web App.
 
 By following these steps, the IRCC Document AI Search frontend should be deployed to Azure Web App and ready to run with the specified environment variables.
+
+### Addtional Suggestions:
+1. Use managed identity for the Azure Function and CosmosDB connection. 
