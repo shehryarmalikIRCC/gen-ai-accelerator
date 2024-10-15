@@ -76,6 +76,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'ircc-aisearch-frontend'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A54D7CB504BF452AB35A508E6C2DD99D }}
           package: .
