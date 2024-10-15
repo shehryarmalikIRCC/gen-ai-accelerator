@@ -7,6 +7,7 @@ from azure.search.documents import SearchClient
 from azure.cosmos import CosmosClient
 from collections import defaultdict
 from common import summary
+import json
 
 def generate_knowledge_scan(query, doc_ids):
     search_endpoint = os.getenv('SEARCH_SERVICE_ENDPOINT')
@@ -101,9 +102,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             )
 
         knowledge_scan = generate_knowledge_scan(query, doc_ids)
+        knowledge_scan_json = json.dumps(knowledge_scan, ensure_ascii=False)
 
         # Return a successful response
-        return func.HttpResponse("Knowledge scan generated successfully.", status_code=200)
+        return func.HttpResponse(
+            knowledge_scan_json,
+            status_code=200,
+            mimetype="application/json"
+        )
 
     except Exception as e:
         logging.error(f"Error in GenerateKnowledgeScan function: {e}")
