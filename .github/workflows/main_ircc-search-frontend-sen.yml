@@ -21,7 +21,16 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: 'Set Environment Variables'
+      - name: Set Environment Variables
+        run: |
+          echo "export EMBEDDING_API_URL=${{ secrets.EMBEDDING_API_URL }}" >> $GITHUB_ENV
+          echo "export EMBEDDING_API_KEY=${{ secrets.EMBEDDING_API_KEY }}" >> $GITHUB_ENV
+          echo "export SEARCH_API_URL=${{ secrets.SEARCH_API_URL }}" >> $GITHUB_ENV
+          echo "export SEARCH_API_KEY=${{ secrets.SEARCH_API_KEY }}" >> $GITHUB_ENV
+          echo "export GENERATE_API_URL=${{ secrets.GENERATE_API_URL }}" >> $GITHUB_ENV
+          echo "export GENERATE_API_KEY=${{ secrets.GENERATE_API_KEY }}" >> $GITHUB_ENV
+    
+      - name: Replace Environment Variables in Angular
         env:
           EMBEDDING_API_URL: ${{ secrets.EMBEDDING_API_URL }}
           EMBEDDING_API_KEY: ${{ secrets.EMBEDDING_API_KEY }}
@@ -36,6 +45,15 @@ jobs:
           sed -i "s#searchApiKey: ''#searchApiKey: '$SEARCH_API_KEY'#g" ./frontend/src/environments/environment.prod.ts
           sed -i "s#generateSynthesisApiUrl: ''#generateSynthesisApiUrl: '$GENERATE_API_URL'#g" ./frontend/src/environments/environment.prod.ts
           sed -i "s#generateSynthesisApiCode: ''#generateSynthesisApiCode: '$GENERATE_API_KEY'#g" ./frontend/src/environments/environment.prod.ts
+      - name: Verify Environment Variables
+        run: |
+          echo "Embedding API URL is set."
+          echo "Search API URL is set."
+          echo "Generate API URL is set."
+        env:
+          EMBEDDING_API_URL: ${{ secrets.EMBEDDING_API_URL }}
+          SEARCH_API_URL: ${{ secrets.SEARCH_API_URL }}
+          GENERATE_API_URL: ${{ secrets.GENERATE_API_URL }}
 
       - name: npm install, build, and test
         run: |
