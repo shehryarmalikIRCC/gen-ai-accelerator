@@ -71,10 +71,16 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
+      - name: 'Azure Login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'ircc-aisearch-frontend'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_12CCFC693EEC4EF39ED2FAF20DC9D38F }}
           package: .
