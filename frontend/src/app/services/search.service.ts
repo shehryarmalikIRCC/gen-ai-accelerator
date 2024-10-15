@@ -100,7 +100,7 @@ export class SearchService {
           const documents: Document[] = searchResponse.value.map(
             (item: any) => ({
               id: item.id,
-              publishedDate: "2022-03-11", // TODO Get the published date from the document
+              publishedDate: "2022-03-11",
               fileName: item.file_name,
               summary: item.summary,
               relevance: this.mapScoreToRelevance(item["@search.score"]),
