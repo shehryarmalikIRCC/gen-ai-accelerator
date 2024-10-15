@@ -124,3 +124,4 @@ By following these steps, the IRCC Document AI Search frontend should be deploye
 
 ### Addtional Suggestions:
 1. Use managed identity for the Azure Function and CosmosDB connection. 
+2. Use Key Vault for secrets. 
