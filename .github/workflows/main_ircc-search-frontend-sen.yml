@@ -69,6 +69,7 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           cd frontend
+          npm install --save express
           zip -r release.zip dist server.js
 
       - name: Upload artifact for deployment job
