@@ -80,5 +80,5 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'ircc-aisearch-frontend'
+          app-name: 'ircc-search-frontend-sen'
           package: .
