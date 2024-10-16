@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: prod
+
 
     steps:
       - uses: actions/checkout@v3
@@ -59,15 +59,18 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
-      - name: 'Azure Login'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+      # - name: 'Azure Login'
+      #   uses: azure/login@v1
+      #   with:
+      #     client-id: ${{secrets.AZUREAPPSERVICE_CLIENTID_8F94146FE101451FAEFC275C93F6DE11}}
+      #     tenant-id: ${{AZUREAPPSERVICE_TENANTID_F6E6A5D15F254576AEA3A9577225747C}}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'ircc-search-frontend-sen'
+          app-name: 'LSKnowledgeScan'
           package: .
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          
