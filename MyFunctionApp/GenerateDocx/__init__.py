@@ -12,10 +12,13 @@ def generate_docx_from_knowledge_scan(scan_data):
 
     # Add content to the DOCX file
     doc.add_heading('Knowledge Scan', level=1)
+    
+    # General notes section
     general_notes = scan_data.get('general_notes', 'No general notes provided.')
     doc.add_heading('General notes:', level=2)
     doc.add_paragraph(general_notes)
 
+    # Keywords and themes section
     keywords = scan_data.get('keywords', [])
     doc.add_heading('Keywords and themes:', level=3)
     if keywords:
@@ -24,6 +27,7 @@ def generate_docx_from_knowledge_scan(scan_data):
     else:
         doc.add_paragraph('No keywords provided.')
 
+    # Resources searched section
     resources_searched = scan_data.get('resources_searched', [])
     doc.add_heading('Resources searched:', level=3)
     if resources_searched:
@@ -32,14 +36,26 @@ def generate_docx_from_knowledge_scan(scan_data):
     else:
         doc.add_paragraph('No resources provided.')
 
+    # Summaries section
     combined_summaries = scan_data.get('combined_summaries', [])
+    overall_summary = ""  # To hold the concatenated summaries
+
     doc.add_heading('Summaries:', level=2)
     if combined_summaries:
         for i, summary_info in enumerate(combined_summaries, 1):
             doc.add_heading(f"Document {i}: {summary_info['pdf_name']}", level=3)
             doc.add_paragraph(summary_info.get('summary', 'No summary available.'))
+            overall_summary += summary_info.get('summary', '') + " "  # Concatenate summaries
+
     else:
         doc.add_paragraph('No summaries available.')
+
+    # Overall Summary section
+    doc.add_heading('Overall Summaries:', level=2)
+    if overall_summary.strip():
+        doc.add_paragraph(overall_summary.strip())  # Add the concatenated summaries
+    else:
+        doc.add_paragraph('No overall summary provided.')
 
     # Save the document to a file in the temp directory
     file_name = f"knowledge_scan_{uuid.uuid4()}.docx"
@@ -78,4 +94,3 @@ def main(inputDocument: func.DocumentList, outputDocument: func.Out[func.Documen
         outputDocument.set(doc_item)
 
     logging.info("DOCX file generated, uploaded to Blob storage, and location saved to Cosmos DB successfully.")
-
