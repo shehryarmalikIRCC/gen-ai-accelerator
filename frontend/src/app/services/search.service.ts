@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { switchMap, map } from "rxjs/operators";
+import { switchMap, map,tap } from "rxjs/operators";
 
 interface Document {
   id: string;
@@ -77,7 +77,11 @@ export class SearchService {
 
   // GenerateSynthesis API
   generateSynthesis(requestBody: any): Observable<any> {
-    console.log("API Request Body: ", requestBody);
-    return this.http.post<any>('/api/generate-synthesis', requestBody);
+    console.log("API Request Body:", requestBody);
+    return this.http.post<any>('/api/generate-synthesis', requestBody).pipe(
+      tap((response) => {
+        console.log("Received synthesis response:", response);
+      })
+    );
   }
 }
