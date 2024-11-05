@@ -20,8 +20,30 @@ body {
   padding: 20px;
 }
 
+
 .title {
-  border-bottom: #f1f0f0 solid;
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center;     /* Centers the content vertically if needed */
+  padding: 20px 0;         
+  border-bottom: 1px solid #f1f0f0; 
+  background-color: #f9f9f9; 
+}
+
+.title h1 {
+  font-size: 2rem;                
+  color: #333;                    
+  margin: 0;                      
+  text-align: center;             
+  font-weight: 600;               
+  letter-spacing: 0.5px;          
+}
+
+
+@media (max-width: 768px) {
+  .title h1 {
+    font-size: 1.5rem;            
+  }
 }
 
 /* Messages area */
@@ -198,7 +220,7 @@ body {
   background-color: #0e8c6a;
 }
 
-/* Optional: Add some transition for smoother appearance */
+
 .ai-message {
   transition: all 0.3s ease;
 }
@@ -230,9 +252,9 @@ body {
   background-color: #f1f0f0;
 }
 
-/* Adjusted Select Column */
+
 .select-column {
-  width: 3%; /* Reduced from 5% to 3% */
+  width: 3%; 
   text-align: center;
 }
 
