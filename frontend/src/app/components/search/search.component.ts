@@ -49,6 +49,7 @@ export class SearchComponent {
       this.documents = docs;
       this.searchPerformed = true;
 
+      
       // Scroll to the bottom after view has updated
       setTimeout(() => {
         this.scrollToBottom();

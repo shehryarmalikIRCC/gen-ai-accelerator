@@ -22,7 +22,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let doc of documents">
-            <td><input type="checkbox" [(ngModel)]="doc.selected" /></td>
+            <td class="select-column">
+              <input type="checkbox" [(ngModel)]="doc.selected" />
+            </td>
             <td>{{ doc.publishedDate }}</td>
             <td>{{ doc.fileName }}</td>
             <td>{{ doc.summary }}</td>
@@ -48,20 +50,20 @@
       <p>
         <strong>General Notes:</strong> {{ synthesisResponse.general_notes }}
       </p>
-      <p>
-        <strong>Keywords:</strong> {{ synthesisResponse.keywords.join(', ') ||
-        'N/A' }}
-      </p>
-      <p>
-        <strong>Resources Searched:</strong> {{
-        synthesisResponse.resources_searched.join(', ') || 'N/A' }}
-      </p>
-      <div *ngFor="let summary of synthesisResponse.combined_summaries">
+      <div class = "synthesis-summary" *ngFor="let summary of synthesisResponse.combined_summaries">
         <p><strong>File Name:</strong> {{ summary.pdf_name }}</p>
+        <p><strong>Bibliography:</strong> {{ summary.bibliography }}</p>
         <p><strong>Summary:</strong> {{ summary.summary }}</p>
       </div>
-      <a href="https://ircc002zdevsa.blob.core.windows.net/curated/filename.docx?sp=r&st=2024-10-16T15:58:45Z&se=2024-10-17T23:58:45Z&spr=https&sv=2022-11-02&sr=b&sig=BhMzvVftdgDYnZq66mWKJhjS1OFqYF%2BECfZc9fCTAIs%3D">Download file</a>
     </div>
+
+    <div class="overall-summary" *ngIf="synthesisResponse">
+      <p><strong>Overall Summary:</strong> {{ synthesisResponse.overall_summary }}</p>
+      <a href="https://ircc002zdevsa.blob.core.windows.net/curated/filename.docx?sp=r&st=2024-10-16T15:58:45Z&se=2024-10-17T23:58:45Z&spr=https&sv=2022-11-02&sr=b&sig=BhMzvVftdgDYnZq66mWKJhjS1OFqYF%2BECfZc9fCTAIs%3D">Download file</a>
+
+    </div>
+    
+    
     <!-- Generate Synthesis Button -->
     <!-- Buttons Container -->
     <div *ngIf="searchPerformed" class="synthesis-button-container">

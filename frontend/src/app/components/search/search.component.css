@@ -161,3 +161,111 @@ body {
   }
 }
 
+
+.synthesis-summary {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.synthesis-summary p {
+  margin: 8px 0;
+}
+
+.overall-summary {
+  background-color: #eef9f1;
+  border-left: 4px solid #10a37f;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.download-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #10a37f;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+}
+
+.download-link:hover {
+  background-color: #0e8c6a;
+}
+
+/* Optional: Add some transition for smoother appearance */
+.ai-message {
+  transition: all 0.3s ease;
+}
+.documents-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-family: Arial, sans-serif;
+  table-layout: fixed;
+}
+
+.documents-table th,
+.documents-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.documents-table th {
+  background-color: #10a37f;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.documents-table tbody tr:hover {
+  background-color: #f1f0f0;
+}
+
+/* Adjusted Select Column */
+.select-column {
+  width: 3%; /* Reduced from 5% to 3% */
+  text-align: center;
+}
+
+.documents-table td {
+  word-wrap: break-word;
+  max-width: 200px;
+}
+
+.documents-table td:last-child {
+  text-align: center;
+  font-weight: bold;
+}
+
+.relevance-great {
+  color: #28a745; /* Green */
+}
+
+.relevance-good {
+  color: #ffc107; /* Amber */
+}
+
+.relevance-fair {
+  color: #dc3545; /* Red */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .documents-table th,
+  .documents-table td {
+    padding: 10px 12px;
+  }
+
+  .documents-table {
+    font-size: 14px;
+  }
+}
