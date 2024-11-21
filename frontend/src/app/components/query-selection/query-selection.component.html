@@ -1,0 +1,41 @@
+<div class="message ai-message" *ngIf="documents.length > 0" #topElement>
+    I have extracted the related information and presented it in the table above.
+    Please select record(s) you would like to synthesize.
+  </div>
+  <div class="message ai-message" *ngIf="documents.length > 0">
+    <table class="documents-table">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>File Name</th>
+          <th>Summary</th>
+          <th>Relevance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of documents">
+          <td class="select-column">
+            <input type="checkbox" [(ngModel)]="doc.selected" />
+          </td>
+          <td>{{ cleanFileName(doc.fileName) }}</td>
+          <td>{{ doc.summary }}</td>
+          <td class="relevance-cell">
+            <span [ngClass]="getRelevanceClass(doc.relevance)">
+              {{ doc.relevance }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="buttons-container">
+      <button class="back-button" (click)="handleBackButton()">
+        &#x2190; Back
+      </button>
+      <button class="back-button" (click)="handleBackButton()">
+        Redo Prompt
+      </button>
+      <button class="generate-button" (click)="handleGenerateButton()">
+        Generate Synthesis
+      </button>
+    </div>
+  </div>

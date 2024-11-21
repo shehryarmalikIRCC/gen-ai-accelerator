@@ -1,0 +1,20 @@
+.user-message-container {
+    display: flex;
+    justify-content: center; /* Center the message horizontally */
+    padding: 10px 0;
+    width: 100%;
+  }
+  
+  .message-text {
+    background: #FFE0B2; /* Light orange shade */
+    padding: 10px;
+    border-radius: 20px; /* Rounded corners */
+    max-width: 60%;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    margin-right: 20px;
+    margin-left: 20px;
+    text-align: center; /* Center text within the message box */
+    color: black; /* Black text for contrast */
+    font-family: 'Arial', sans-serif; /* Use Arial or Helvetica font */
+    font-size: 16px; /* Match the font size */
+  }

@@ -1,0 +1,96 @@
+.main-chat-background {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures element is at least as tall as the viewport */
+    width: 100vw; /* Full viewport width */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(252, 244, 238, 1) 80%, rgba(252, 244, 238, 1) 100%);  
+    position: relative;
+    padding: 10px 20px;
+    box-sizing: border-box;
+  }
+  
+  .content {
+    flex: 1;
+    width: 100%; /* Full width */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center child elements */
+    padding-bottom: 60px; /* Prevents content overlapping with the input box */
+  }
+  
+  app-query-result {
+    width: 100%;
+    max-width: 800px; /* Limit max width for readability */
+    margin: 0 auto; /* Center the query result */
+    padding-top: 20px; /* Add some top padding */
+    padding-bottom: 20px; /* Add some bottom padding */
+  }
+  
+  .document-viewer-container {
+    width: 100%;
+    max-width: 800px; /* Ensure consistent width */
+  }
+  
+  .generate-button-container {
+    text-align: center;
+    margin-top: 12px;
+    width: 100%;
+    max-width: 800px; /* Consistent with other containers */
+  }
+  
+  .back-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center the back button horizontally */
+    margin-bottom: 20px;
+    position: relative; /* Changed from sticky */
+    left: 0; /* Ensure it's positioned at the left */
+  }
+  
+  .fixed-bottom {
+    position: absolute;
+    bottom: 10px; /* To create a gap from the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+    width: calc(100% - 40px); /* To account for the left and right gaps */
+  }
+  
+  .loading-icon-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .loading-icon {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.6);
+    border-top-color: #90CAF9;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    background: linear-gradient(90deg, #ADD8E6, #CEABE3, #DBB0EA);
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .generate-button, .back-button {
+    padding: 10px 20px;
+    background-color: #90CAF9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.8); /* Default shadow */
+  }
+  
+  .generate-button:hover, .back-button:hover {
+    background: linear-gradient(90deg, #ADD8E6, #CEABE3, #DBB0EA);
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.8); /* Default shadow */
+  }

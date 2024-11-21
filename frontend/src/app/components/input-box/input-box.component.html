@@ -1,0 +1,14 @@
+<div class="input-box-container" [class.expanded]="isExpanded || isHovered" 
+     (mouseenter)="setHover(true)" (mouseleave)="setHover(false)">
+  <input 
+    type="text" 
+    [(ngModel)]="inputText" 
+    class="input-box" 
+    placeholder="Enter Prompt"
+    (focus)="expandInput()"
+    (blur)="shrinkInput()"
+    (keypress)="handleKeyPress($event)"
+  />
+  <div class="char-count">{{ inputText.length }}/4000</div>
+</div>
+

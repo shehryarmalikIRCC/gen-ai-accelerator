@@ -1,0 +1,30 @@
+<div class="document-viewer-container">
+    <div class="document-viewer">
+      <h2>Knowledge Scan</h2>
+  
+      <div class="general-notes">
+        <p><strong>General notes:</strong> {{ synthesisResponse.general_notes }}</p>
+      </div>
+  
+      <div class="summaries">
+        <h3>Summaries:</h3>
+  
+        <div class="summary-item" *ngFor="let summary of synthesisResponse.combined_summaries">
+          <p>
+            <strong>Document {{summary.index}}: 
+              <span class="pdf-name">{{ summary.pdf_name }}</span>
+            </strong>
+            <br>
+            <span class="bibliography">{{ summary.bibliography }}</span>
+          </p>
+          <p>{{ summary.summary }}</p>
+        </div>
+      </div>
+  
+      <div class="overall-summary">
+        <h3>Overall Summary:</h3>
+        <p>{{ synthesisResponse.overall_summary }}</p>
+        <a class="download-link" href="https://ircc002zdevsa.blob.core.windows.net/curated/filename.docx">Download file</a>
+      </div>
+    </div>
+  </div>

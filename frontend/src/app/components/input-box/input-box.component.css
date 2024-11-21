@@ -1,0 +1,46 @@
+.input-box-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background:linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(252, 244, 238, 1) 80%, rgba(252, 244, 238, 1) 100%);/* Light background color */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.8); /* Default shadow */
+    transition: width 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: text;
+    position: relative;
+    width: 300px; /* Initial width */
+    margin: 0 auto; /* Center the input box horizontally */
+  }
+  
+  .input-box-container.expanded {
+    width: calc(100% - 500px); /* Expands to full width with 20px gap on both sides */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.8); /* Larger shadow on hover */
+  }
+  
+  .input-box {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 20px;
+    background: #fff; /* White background for the input field */
+  }
+  
+  .char-count {
+    font-size: 12px;
+    color: #000000;
+    position: absolute;
+    bottom: -20px;
+    right: 10px;
+  }
+  
+  /* Hide the character count initially */
+  .input-box-container .char-count {
+    display: none;
+  }
+  
+  /* Show the character count when the input is expanded */
+  .input-box-container.expanded .char-count {
+    display: block;
+  }
