@@ -9,7 +9,7 @@
     cursor: text;
     position: relative;
     width: 300px; /* Initial width */
-    margin: 0 auto; /* Center the input box horizontally */
+    margin: 0 auto 20px auto; /* Add spacing between the box and the disclaimer */
   }
   
   .input-box-container.expanded {
@@ -44,3 +44,20 @@
   .input-box-container.expanded .char-count {
     display: block;
   }
+  .disclaimer-message {
+    font-size: 12px;
+    color: #666666; /* Subtle text color */
+    text-align: center; /* Center the disclaimer */
+    margin-top: 20px;
+}
+
+.disclaimer-message a {
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove underline */
+    margin-left: 5px;
+    
+}
+
+.disclaimer-message a:hover {
+    text-decoration: underline; /* Underline on hover */
+}

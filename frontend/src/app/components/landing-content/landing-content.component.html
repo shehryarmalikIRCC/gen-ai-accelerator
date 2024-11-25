@@ -1,0 +1,14 @@
+<div class="container">
+    <h1>Here are the tasks I can do</h1>
+    <div class="content">
+      <!-- Loop through the cards array -->
+      <div
+        class="card"
+        *ngFor="let card of cards"
+        [class.visible]="card.visible"
+      >
+        <img [src]="card.image" [alt]="card.title" />
+        <p>{{ card.title }}</p>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fef7f2;
+  }
+  
+  .container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 80px;
+    margin-top: 150px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500; /* Medium weight for clarity */
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 40px;
+  }
+  
+  .content {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  /* Card base styles */
+  .card {
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Default shadow */
+    text-align: center;
+    opacity: 0; /* Initially invisible */
+    transform: translateY(20px); /* Initially slightly below normal position */
+    transition: 
+      opacity 0.8s ease, 
+      transform 0.8s ease, 
+      box-shadow 0.3s ease, 
+      scale 0.3s ease; /* Smooth fade-in and hover animations */
+  }
+  
+  .card.visible {
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Move to normal position */
+  }
+  
+  /* Hover effect - Pop-Out */
+  .card:hover {
+    transform: scale(1.1); /* Slight zoom effect */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* A bigger shadow to make it pop */
+  }
+  
+  /* Card image */
+  .card img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .card p {
+    margin: 10px 0 0;
+    color: #555;
+    font-size: 16px;
+  }

@@ -1,40 +1,41 @@
 <div class="main-chat-background">
-    <app-header></app-header>
-  
-  
-    <div class="content">
-      <app-user-message *ngFor="let message of messages" [message]="message"></app-user-message>
-  
-  
-  
-  
-      <!-- Loading Icon -->
-      <div class="loading-icon-container" *ngIf="isLoading">
-        <div class="loading-icon"></div>
-        
-      </div>
-    </div>
-  
-    <div *ngIf="showQueryResult" class="back-button-container">
-      <button class="back-button" (click)="handleNewKnowledgeScan()">New Knowledge Scan</button>
-    </div>
-  
-  
-  
-        <!-- Query Selection Component -->
-        <app-query-selection *ngIf="!synthesisResponse" [documents]="documents" (synthesisResult) = "handleSynthesisResult($event)" (querySelection) = "handleQuerySelection()" [query] ="messages[messages.length-1]" [hidden]="!showQuerySelection"  ></app-query-selection>
-  
-  
-         <!-- Query Result Component -->
-  
-      <app-query-result *ngIf = "synthesisResponse" [synthesisResponse]="synthesisResponse" [isLoading]="isLoading"></app-query-result> 
+  <app-header></app-header>
+
+
+  <app-landing-content  *ngIf="!showQuerySelection && !isLoading && !showQueryResult"></app-landing-content>
+  <div class="content">
+    <app-user-message *ngFor="let message of messages" [message]="message"></app-user-message>
+
+
+
+
+    <!-- Loading Icon -->
+    <div class="loading-icon-container" *ngIf="isLoading">
+      <div class="loading-icon"></div>
       
-      
-    
-    
-       
-    <!-- The input box -->
-    <div class="fixed-bottom" *ngIf="!showQuerySelection && !isLoading && !showQueryResult">
-      <app-input-box (messageSend)="handleMessageSend($event)"></app-input-box>
     </div>
   </div>
+
+  <div *ngIf="showQueryResult" class="back-button-container">
+    <button class="back-button" (click)="handleNewKnowledgeScan()">New Knowledge Scan</button>
+  </div>
+
+
+
+      <!-- Query Selection Component -->
+      <app-query-selection *ngIf="!synthesisResponse" [documents]="documents" (synthesisResult) = "handleSynthesisResult($event)" (querySelection) = "handleQuerySelection()" [query] ="messages[messages.length-1]" [hidden]="!showQuerySelection"  ></app-query-selection>
+
+
+       <!-- Query Result Component -->
+
+    <app-query-result *ngIf = "synthesisResponse" [synthesisResponse]="synthesisResponse" [isLoading]="isLoading"></app-query-result> 
+    
+    
+  
+  
+     
+  <!-- The input box -->
+  <div class="fixed-bottom" *ngIf="!showQuerySelection && !isLoading && !showQueryResult">
+    <app-input-box (messageSend)="handleMessageSend($event)"></app-input-box>
+  </div>
+</div>

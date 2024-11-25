@@ -5,16 +5,15 @@ import { UserMessageComponent } from '../user-message/user-message.component';
 import { CommonModule } from '@angular/common';
 import { QueryResultComponent } from '../query-result/query-result.component';
 import { QuerySelectionComponent } from '../query-selection/query-selection.component';
+import { LandingContentComponent } from '../landing-content/landing-content.component';
 import { SearchqueryService } from '../../services/searchquery.service';
 import { Document } from '../../models/document.model';
-
-
 
 
 @Component({
   selector: 'app-main-chat',
   standalone: true,
-  imports: [HeaderComponent, InputBoxComponent,UserMessageComponent,CommonModule,QueryResultComponent, QuerySelectionComponent],
+  imports: [HeaderComponent, InputBoxComponent,UserMessageComponent,CommonModule,QueryResultComponent, QuerySelectionComponent,LandingContentComponent],
   templateUrl: './main-chat.component.html',
   styleUrl: './main-chat.component.css'
 })
@@ -24,6 +23,7 @@ export class MainChatComponent {
   showQuerySelection = false;
   showQueryResult = false;
   isHidden = false;
+ 
   
    // Example documents
   documents: Document[] = [];
