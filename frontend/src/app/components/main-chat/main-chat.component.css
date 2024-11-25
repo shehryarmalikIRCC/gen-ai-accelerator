@@ -94,3 +94,6 @@
     background: linear-gradient(90deg, #ADD8E6, #CEABE3, #DBB0EA);
     box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.8); /* Default shadow */
   }
+  app-landing-content {
+    margin-bottom: 80px; /* Adjust the value as needed */
+  }
