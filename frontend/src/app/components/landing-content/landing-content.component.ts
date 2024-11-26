@@ -11,19 +11,19 @@ export class LandingContentComponent implements OnInit {
   cards = [
     {
       id: 1,
-      title: 'Retrieve Documents Relating to Prompt',
+      title: 'Retrieve Documents',
       image: 'assets/doc1.jpg',
       visible: false, // Initially hidden for animation
     },
     {
       id: 2,
-      title: 'Create Annotated Bibliography',
+      title: 'Create Annotated Bibliographies',
       image: 'assets/anno.jfif',
       visible: false, // Initially hidden for animation
     },
     {
       id: 3,
-      title: 'Generate Knowledge Scan',
+      title: 'Generate Knowledge Scans',
       image: 'assets/ks.jfif',
       visible: false, // Initially hidden for animation
     },
