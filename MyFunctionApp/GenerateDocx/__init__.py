@@ -3,6 +3,8 @@ import uuid
 import logging
 import azure.functions as func
 from docx import Document
+from docx.shared import Pt
+from docx.oxml import OxmlElement
 
 def fetch_scan_data_from_cosmos(scan_data):
     return scan_data
@@ -38,22 +40,30 @@ def generate_docx_from_knowledge_scan(scan_data):
 
     # Summaries section
     combined_summaries = scan_data.get('combined_summaries', [])
-    overall_summary = ""  # To hold the concatenated summaries
+    overall_summary = scan_data.get('overall_summary', 'No overall summary available.')
 
     doc.add_heading('Summaries:', level=2)
     if combined_summaries:
         for i, summary_info in enumerate(combined_summaries, 1):
+            # Document Title
             doc.add_heading(f"Document {i}: {summary_info['pdf_name']}", level=3)
-            doc.add_paragraph(summary_info.get('summary', 'No summary available.'))
-            overall_summary += summary_info.get('summary', '') + " "  # Concatenate summaries
+            
+            # Add Bibliography in italic and smaller font
+            bibliography_entry = summary_info.get('bibliography', 'No bibliography available')
+            bibliography_paragraph = doc.add_paragraph(bibliography_entry)
+            run = bibliography_paragraph.runs[0]
+            run.font.italic = True
+            run.font.size = Pt(10)  # Set smaller font size
 
+            # Summary
+            doc.add_paragraph(summary_info.get('summary', 'No summary available.'))
     else:
         doc.add_paragraph('No summaries available.')
 
     # Overall Summary section
-    doc.add_heading('Overall Summaries:', level=2)
+    doc.add_heading('Overall Summary:', level=2)
     if overall_summary.strip():
-        doc.add_paragraph(overall_summary.strip())  # Add the concatenated summaries
+        doc.add_paragraph(overall_summary)
     else:
         doc.add_paragraph('No overall summary provided.')
 
