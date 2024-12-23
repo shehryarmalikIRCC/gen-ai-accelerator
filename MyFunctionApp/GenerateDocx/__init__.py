@@ -28,7 +28,7 @@ def generate_docx_from_knowledge_scan(scan_data):
     section.header_distance = Inches(0.3)
     logging.info("Setting Image path")
     # Path to the header image
-    header_image_path = 'MyFunctionApp\Capture.PNG'  # Replace with your image path
+    header_image_path = 'Capture.PNG'  # Replace with your image path
 
     if os.path.exists(header_image_path):
         paragraph = header.paragraphs[0]
