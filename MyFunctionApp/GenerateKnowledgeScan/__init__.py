@@ -11,35 +11,6 @@ from collections import defaultdict
 from common import summary
 
 def generate_knowledge_scan(query, doc_ids):
-
-    overall_summary_system_prompt = """
-You are an advanced AI assistant specialized in producing comprehensive, structured, and well-integrated overall summaries of multiple academic or informational document summaries. Your summaries should emulate the style and depth of scholarly abstracts, seamlessly combining information from various sources into a unified narrative. The summaries should include the following elements:
-
-**Background Context:**
-
-- Provide an overarching context that encompasses the topics and themes from all document summaries.
-- Highlight the prevalence, significance, and key issues relevant to the combined subject matter.
-
-**Methodological Details (if applicable):**
-
-- Describe common study designs, data sources, populations, and analytical methods referenced across the document summaries.
-- Note any variations or unique methodological approaches used in the individual studies.
-
-**Main Findings:**
-
-- Synthesize the primary outcomes, key themes, and evidence presented in the document summaries.
-- Identify patterns, trends, and significant results that emerge from the collective information.
-
-**Conclusions and Implications:**
-
-- Explain the overarching implications and significance of the combined findings.
-- Discuss potential barriers and enablers, as well as future directions or recommendations suggested by the documents.
-
-**Reference Integration:**
-
-- Assign a unique superscript reference number to each document summary.
-- Incorporate these superscript numbers appropriately within the narrative to attribute information to the corresponding sources.
-"""
     try:
         # Fetch environment variables
         search_endpoint = os.getenv('SEARCH_SERVICE_ENDPOINT')
@@ -102,15 +73,11 @@ You are an advanced AI assistant specialized in producing comprehensive, structu
                 "bibliography": bibliography_entry
             })
 
-        overall_summary_prompt = "Please generate a comprehensive and cohesive overall summary based on the following document summaries. As you synthesize the information, incorporate superscript reference numbers corresponding to each source document using the format exampleTextⁿ, where n represents the unique reference number for each document.\n\n"
+        overall_summary_prompt = "Can you generate an overall summary based on the following document summaries, adding a superscript reference number for each document when applicable?\n\n"
         for i, summary_info in enumerate(combined_summaries, 1):
             overall_summary_prompt += f"{summary_info['summary']} [{i}]\n"
 
-        overall_summary = summary.generate_prompt(overall_summary_prompt, overall_summary_system_prompt, aoai_key, aoai_url, model, aoai_version_completion)
- 
-        #Extract Keywords
-        keyword_prompt = "Extract the keywords from the following text: " + overall_summary
-        keywords = summary.generate_prompt(keyword_prompt,"You are an AI Assistant that extracts keywords and themes. Do not provide any other statements other than the keywords and themes only. Extract a max of 25 key words. Ensure they make sense and aren't dates like years. For example do not ever add years like 'xxxx-xxxx' where x are numbers",aoai_key, aoai_url, model, aoai_version_completion)
+        overall_summary = summary.generate_prompt(overall_summary_prompt, "You are an AI assistant that generates overall summaries.", aoai_key, aoai_url, model, aoai_version_completion)
 
         # Build the final knowledge scan response
         knowledge_scan = {
@@ -118,8 +85,7 @@ You are an advanced AI assistant specialized in producing comprehensive, structu
             "query": query,
             "combined_summaries": combined_summaries,
             "overall_summary": overall_summary,
-            "general_notes": f"Generated based on query: {query}. The Library Services AI Agent has conducted a search for journal articles, books and papers or reports from GcDocs repository. Following is an AI generated knowledge scan report.",
-            "keywords":keywords
+            "general_notes": f"Generated based on query: {query}. This scan covers documents from various sources and provides a summarized overview."
         }
 
         # Save the knowledge scan to Cosmos DB
