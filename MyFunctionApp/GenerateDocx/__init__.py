@@ -29,6 +29,8 @@ def generate_docx_from_knowledge_scan(scan_data):
     doc.add_heading('Keywords and themes:', level=3)
     if keywords:
         for keyword in keywords:
+            logging.info("keyword: ",keyword," KeyworDS: ",keywords)
+
             doc.add_paragraph(keyword, style='List Bullet')
     else:
         doc.add_paragraph('No keywords provided.')
