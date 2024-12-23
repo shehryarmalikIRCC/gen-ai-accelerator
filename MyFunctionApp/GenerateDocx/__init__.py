@@ -3,8 +3,13 @@ import uuid
 import logging
 import azure.functions as func
 from docx import Document
-from docx.shared import Pt
 from docx.oxml import OxmlElement
+from docx.shared import Inches, RGBColor, Pt
+from docx.enum.section import WD_ORIENT
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.oxml.ns import qn
+from docx.enum.section import WD_SECTION
+from datetime import datetime
 
 def fetch_scan_data_from_cosmos(scan_data):
     return scan_data
@@ -12,6 +17,27 @@ def fetch_scan_data_from_cosmos(scan_data):
 def generate_docx_from_knowledge_scan(scan_data):
     logging.info("DOC being made.")
     doc = Document()
+    section = doc.sections[0]
+    section.different_first_page_header_footer = True
+    logging.info("Adding Image HGeader.")
+    # Add header to the first page
+    header = section.first_page_header
+
+    # Set the header margins to minimal
+    section.top_margin = Inches(0.5)
+    section.header_distance = Inches(0.3)
+    logging.info("Setting Image path")
+    # Path to the header image
+    header_image_path = 'MyFunctionApp\Capture.PNG'  # Replace with your image path
+
+    if os.path.exists(header_image_path):
+        paragraph = header.paragraphs[0]
+        run = paragraph.add_run()
+        # Set width to span close to the entire page width (standard 8.5 inches - left & right margins)
+        run.add_picture(header_image_path, width=Inches(7.5))  # Adjust width based on your content
+        paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    else:
+        logging.warning(f"Header image not found at {header_image_path}. Skipping header image.")
 
     # Add content to the DOCX file
     logging.info("Adding Heading for Knowledge Scan")
