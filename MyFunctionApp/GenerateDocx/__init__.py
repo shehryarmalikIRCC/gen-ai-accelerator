@@ -25,7 +25,8 @@ def generate_docx_from_knowledge_scan(scan_data):
 
     # Keywords and themes section
     logging.info("Adding Keywords for Knowledge Scan")
-    keywords = scan_data.get('keywords', [])
+    keywords_str = scan_data.get('keywords', [])
+    keywords = [keyword.strip() for keyword in keywords_str.split(',') if keyword.strip()]
     doc.add_heading('Keywords and themes:', level=3)
     if keywords:
         for keyword in keywords:
