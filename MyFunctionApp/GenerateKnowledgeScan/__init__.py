@@ -108,13 +108,18 @@ You are an advanced AI assistant specialized in producing comprehensive, structu
 
         overall_summary = summary.generate_prompt(overall_summary_prompt, overall_summary_system_prompt, aoai_key, aoai_url, model, aoai_version_completion)
  
+        #Extract Keywords
+        keyword_prompt = "Extract the keywords from the following text: " + overall_summary
+        keywords = summary.generate_prompt(keyword_prompt,"You are an AI Assistant that extracts keywords and themes. Do not provide any other statements other than the keywords and themes only. Extract a max of 25 key words. Ensure they make sense and aren't dates like years. For example do not ever add years like 'xxxx-xxxx' where x are numbers",aoai_key, aoai_url, model, aoai_version_completion)
+
         # Build the final knowledge scan response
         knowledge_scan = {
             "id": str(uuid.uuid4()),
             "query": query,
             "combined_summaries": combined_summaries,
             "overall_summary": overall_summary,
-            "general_notes": f"Generated based on query: {query}. This scan covers documents from various sources and provides a summarized overview."
+            "general_notes": f"Generated based on query: {query}. The Library Services AI Agent has conducted a search for journal articles, books and papers or reports from GcDocs repository. Following is an AI generated knowledge scan report.",
+            "keywords":keywords
         }
 
         # Save the knowledge scan to Cosmos DB

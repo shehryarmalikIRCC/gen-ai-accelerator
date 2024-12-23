@@ -1,28 +1,94 @@
 import os
 import uuid
 import logging
-import azure.functions as func
+import json
 from docx import Document
-from docx.shared import Pt
-from docx.oxml import OxmlElement
+from docx.shared import Inches, RGBColor, Pt
+from docx.enum.section import WD_ORIENT
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.oxml.ns import qn
+from docx.enum.section import WD_SECTION
+from datetime import datetime
 
 def fetch_scan_data_from_cosmos(scan_data):
     return scan_data
 
+def remove_prefix(pdf_name):
+    """
+    Removes the 'intermediate/' prefix from the given pdf_name if it exists.
+
+    Parameters:
+        pdf_name (str): The original PDF filename, potentially with the 'intermediate/' prefix.
+
+    Returns:
+        str: The PDF filename without the 'intermediate/' prefix.
+    """
+    try:
+        prefix = "intermediate/"
+        if pdf_name.startswith(prefix):
+            return pdf_name[len(prefix):]
+        return pdf_name
+    except Exception as e:
+        # Log the exception if logging is set up, or handle it as needed
+        # For simplicity, we'll just return the original pdf_name
+        return pdf_name
+
 def generate_docx_from_knowledge_scan(scan_data):
     doc = Document()
+    section = doc.sections[0]
+    section.different_first_page_header_footer = True
+
+    # Add header to the first page
+    header = section.first_page_header
+
+    # Set the header margins to minimal
+    section.top_margin = Inches(0.5)
+    section.header_distance = Inches(0.3)
+
+    # Path to the header image
+    header_image_path = 'capture.png'  # Replace with your image path
+
+    if os.path.exists(header_image_path):
+        paragraph = header.paragraphs[0]
+        run = paragraph.add_run()
+        # Set width to span close to the entire page width (standard 8.5 inches - left & right margins)
+        run.add_picture(header_image_path, width=Inches(7.5))  # Adjust width based on your content
+        paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    else:
+        logging.warning(f"Header image not found at {header_image_path}. Skipping header image.")
 
     # Add content to the DOCX file
-    doc.add_heading('Knowledge Scan', level=1)
+    # Move the "Knowledge Scan" heading to the center with black bold font size 14
+    heading_paragraph = doc.add_paragraph()
+    heading_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    heading_run = heading_paragraph.add_run('Knowledge Scan')
+    heading_run.bold = True
+    heading_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+    heading_run.font.size = Pt(14)
+
+    # Add today's date formatted as "Month Day, Year" with bold and smaller font
+    today = datetime.today().strftime('%B %d, %Y')
+    date_paragraph = doc.add_paragraph()
+    date_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    date_run = date_paragraph.add_run(today)
+    date_run.bold = True
+    date_run.font.size = Pt(10)  # Smaller font size
     
     # General notes section
     general_notes = scan_data.get('general_notes', 'No general notes provided.')
-    doc.add_heading('General notes:', level=2)
-    doc.add_paragraph(general_notes)
+    general_notes_paragraph = doc.add_paragraph(general_notes)
+    general_notes_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # Optional: Set alignment if needed
 
     # Keywords and themes section
-    keywords = scan_data.get('keywords', [])
-    doc.add_heading('Keywords and themes:', level=3)
+    
+    keywords = scan_data.get('keywords', "").split(", ")
+    keywords_paragraph = doc.add_heading('Keywords and themes:', level=3)
+    if keywords_paragraph.runs:
+        keywords_run = keywords_paragraph.runs[0]
+        keywords_run.font.bold = True
+        keywords_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+        keywords_run.font.size = Pt(14)
+
     if keywords:
         for keyword in keywords:
             doc.add_paragraph(keyword, style='List Bullet')
@@ -30,42 +96,59 @@ def generate_docx_from_knowledge_scan(scan_data):
         doc.add_paragraph('No keywords provided.')
 
     # Resources searched section
-    resources_searched = scan_data.get('resources_searched', [])
-    doc.add_heading('Resources searched:', level=3)
+    resources_searched = scan_data.get('combined_summaries', [])
+    resources_paragraph = doc.add_heading('Resources searched:', level=3)
+    
+    # Apply styling to the "Resources searched" heading
+    if resources_paragraph.runs:
+        resources_run = resources_paragraph.runs[0]
+        resources_run.font.bold = True
+        resources_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+        resources_run.font.size = Pt(14)
+
     if resources_searched:
         for resource in resources_searched:
-            doc.add_paragraph(resource, style='List Bullet')
+            pdf_name = resource['pdf_name']
+            updated_pdf_name = remove_prefix(pdf_name)
+            doc.add_paragraph(updated_pdf_name, style='List Bullet')
     else:
         doc.add_paragraph('No resources provided.')
 
-    # Summaries section
-    combined_summaries = scan_data.get('combined_summaries', [])
-    overall_summary = scan_data.get('overall_summary', 'No overall summary available.')
-
-    doc.add_heading('Summaries:', level=2)
-    if combined_summaries:
-        for i, summary_info in enumerate(combined_summaries, 1):
-            # Document Title
-            doc.add_heading(f"Document {i}: {summary_info['pdf_name']}", level=3)
-            
-            # Add Bibliography in italic and smaller font
-            bibliography_entry = summary_info.get('bibliography', 'No bibliography available')
-            bibliography_paragraph = doc.add_paragraph(bibliography_entry)
-            run = bibliography_paragraph.runs[0]
-            run.font.italic = True
-            run.font.size = Pt(10)  # Set smaller font size
-
-            # Summary
-            doc.add_paragraph(summary_info.get('summary', 'No summary available.'))
-    else:
-        doc.add_paragraph('No summaries available.')
-
     # Overall Summary section
-    doc.add_heading('Overall Summary:', level=2)
+    overall_summary = scan_data.get('overall_summary', '')
+    overall_paragraph = doc.add_heading('Overall Summary:', level=2)
+    
+    # Apply styling to the "Overall Summary" heading
+    if overall_paragraph.runs:
+        overall_run = overall_paragraph.runs[0]
+        overall_run.font.bold = True
+        overall_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+        overall_run.font.size = Pt(14)
+
     if overall_summary.strip():
-        doc.add_paragraph(overall_summary)
+        doc.add_paragraph(overall_summary.strip())  # Add the concatenated summaries
     else:
         doc.add_paragraph('No overall summary provided.')
+
+    # Summaries section
+    combined_summaries = scan_data.get('combined_summaries', [])
+    summaries_paragraph = doc.add_heading('Sources Summaries:', level=2)
+    
+    # Apply styling to the "Sources Summaries" heading
+    if summaries_paragraph.runs:
+        summaries_run = summaries_paragraph.runs[0]
+        summaries_run.font.bold = True
+        summaries_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+        summaries_run.font.size = Pt(14)
+
+    if combined_summaries:
+        for i, summary_info in enumerate(combined_summaries, 1):
+            new_pdf_name = remove_prefix(summary_info['pdf_name'])
+            doc.add_heading(f"Document {i}: {new_pdf_name}", level=3)
+            doc.add_paragraph(summary_info.get('summary', 'No summary available.'))
+            overall_summary += summary_info.get('summary', '') + " "  # Concatenate summaries
+    else:
+        doc.add_paragraph('No summaries available.')
 
     # Save the document to a file in the temp directory
     file_name = f"knowledge_scan_{uuid.uuid4()}.docx"
