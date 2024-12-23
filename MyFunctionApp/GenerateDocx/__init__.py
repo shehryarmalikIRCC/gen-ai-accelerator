@@ -130,36 +130,41 @@ def generate_docx_from_knowledge_scan(scan_data):
     else:
         doc.add_paragraph('No resources provided.')
 
-    # Summaries section
-    logging.info("Adding Summaries for Knowledge Scan")
-    combined_summaries = scan_data.get('combined_summaries', [])
-    overall_summary = scan_data.get('overall_summary', 'No overall summary available.')
-
-    doc.add_heading('Summaries:', level=2)
-    if combined_summaries:
-        for i, summary_info in enumerate(combined_summaries, 1):
-            # Document Title
-            doc.add_heading(f"Document {i}: {summary_info['pdf_name']}", level=3)
-            
-            # Add Bibliography in italic and smaller font
-            bibliography_entry = summary_info.get('bibliography', 'No bibliography available')
-            bibliography_paragraph = doc.add_paragraph(bibliography_entry)
-            run = bibliography_paragraph.runs[0]
-            run.font.italic = True
-            run.font.size = Pt(10)  # Set smaller font size
-
-            # Summary
-            doc.add_paragraph(summary_info.get('summary', 'No summary available.'))
-    else:
-        doc.add_paragraph('No summaries available.')
-
     # Overall Summary section
-    logging.info("Adding Overall Summary for Knowledge Scan")
-    doc.add_heading('Overall Summary:', level=2)
+    overall_summary = scan_data.get('overall_summary', '')
+    overall_paragraph = doc.add_heading('Overall Summary:', level=2)
+    
+    # Apply styling to the "Overall Summary" heading
+    if overall_paragraph.runs:
+        overall_run = overall_paragraph.runs[0]
+        overall_run.font.bold = True
+        overall_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+        overall_run.font.size = Pt(14)
+
     if overall_summary.strip():
-        doc.add_paragraph(overall_summary)
+        doc.add_paragraph(overall_summary.strip())  # Add the concatenated summaries
     else:
         doc.add_paragraph('No overall summary provided.')
+
+    # Summaries section
+    combined_summaries = scan_data.get('combined_summaries', [])
+    summaries_paragraph = doc.add_heading('Sources Summaries:', level=2)
+    
+    # Apply styling to the "Sources Summaries" heading
+    if summaries_paragraph.runs:
+        summaries_run = summaries_paragraph.runs[0]
+        summaries_run.font.bold = True
+        summaries_run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+        summaries_run.font.size = Pt(14)
+
+    if combined_summaries:
+        for i, summary_info in enumerate(combined_summaries, 1):
+            new_pdf_name = remove_prefix(summary_info['pdf_name'])
+            doc.add_heading(f"Document {i}: {new_pdf_name}", level=3)
+            doc.add_paragraph(summary_info.get('summary', 'No summary available.'))
+            overall_summary += summary_info.get('summary', '') + " "  # Concatenate summaries
+    else:
+        doc.add_paragraph('No summaries available.')
 
     # Save the document to a file in the temp directory
     file_name = f"knowledge_scan_{uuid.uuid4()}.docx"
