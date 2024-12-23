@@ -84,7 +84,10 @@ def generate_docx_from_knowledge_scan(scan_data):
     date_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     date_run = date_paragraph.add_run(today)
     date_run.bold = True
-    date_run.font.size = Pt(10) 
+    date_run.font.size = Pt(8) 
+
+    heading_paragraph.paragraph_format.space_before = Pt(0)
+    heading_paragraph.paragraph_format.space_after = Pt(0)
     
     # General notes section
     general_notes = scan_data.get('general_notes', 'No general notes provided.')
@@ -96,7 +99,7 @@ def generate_docx_from_knowledge_scan(scan_data):
     logging.info("Adding Keywords for Knowledge Scan")
     keywords_str = scan_data.get('keywords', [])
     keywords = [keyword.strip() for keyword in keywords_str.split(',') if keyword.strip()]
-    keywords_paragraph = doc.add_heading('Keywords and themes:', level=3)
+    keywords_paragraph = doc.add_heading('Keywords and Themes:', level=3)
     if keywords_paragraph.runs:
         keywords_run = keywords_paragraph.runs[0]
         keywords_run.font.bold = True
