@@ -10,17 +10,21 @@ def fetch_scan_data_from_cosmos(scan_data):
     return scan_data
 
 def generate_docx_from_knowledge_scan(scan_data):
+    logging.info("DOC being made.")
     doc = Document()
 
     # Add content to the DOCX file
+    logging.info("Adding Heading for Knowledge Scan")
     doc.add_heading('Knowledge Scan', level=1)
     
     # General notes section
+    logging.info("Adding General Notes for Knowledge Scan")
     general_notes = scan_data.get('general_notes', 'No general notes provided.')
     doc.add_heading('General notes:', level=2)
     doc.add_paragraph(general_notes)
 
     # Keywords and themes section
+    logging.info("Adding Keywords for Knowledge Scan")
     keywords = scan_data.get('keywords', [])
     doc.add_heading('Keywords and themes:', level=3)
     if keywords:
@@ -30,6 +34,7 @@ def generate_docx_from_knowledge_scan(scan_data):
         doc.add_paragraph('No keywords provided.')
 
     # Resources searched section
+    logging.info("Adding resources for Knowledge Scan")
     resources_searched = scan_data.get('resources_searched', [])
     doc.add_heading('Resources searched:', level=3)
     if resources_searched:
@@ -39,6 +44,7 @@ def generate_docx_from_knowledge_scan(scan_data):
         doc.add_paragraph('No resources provided.')
 
     # Summaries section
+    logging.info("Adding Summaries for Knowledge Scan")
     combined_summaries = scan_data.get('combined_summaries', [])
     overall_summary = scan_data.get('overall_summary', 'No overall summary available.')
 
@@ -61,6 +67,7 @@ def generate_docx_from_knowledge_scan(scan_data):
         doc.add_paragraph('No summaries available.')
 
     # Overall Summary section
+    logging.info("Adding Overall Summary for Knowledge Scan")
     doc.add_heading('Overall Summary:', level=2)
     if overall_summary.strip():
         doc.add_paragraph(overall_summary)
