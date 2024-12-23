@@ -9,26 +9,6 @@ from docx.oxml import OxmlElement
 def fetch_scan_data_from_cosmos(scan_data):
     return scan_data
 
-def remove_prefix(pdf_name):
-    """
-    Removes the 'intermediate/' prefix from the given pdf_name if it exists.
-
-    Parameters:
-        pdf_name (str): The original PDF filename, potentially with the 'intermediate/' prefix.
-
-    Returns:
-        str: The PDF filename without the 'intermediate/' prefix.
-    """
-    try:
-        prefix = "intermediate/"
-        if pdf_name.startswith(prefix):
-            return pdf_name[len(prefix):]
-        return pdf_name
-    except Exception as e:
-        # Log the exception if logging is set up, or handle it as needed
-        # For simplicity, we'll just return the original pdf_name
-        return pdf_name
-
 def generate_docx_from_knowledge_scan(scan_data):
     doc = Document()
 
