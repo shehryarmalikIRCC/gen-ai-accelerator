@@ -110,7 +110,7 @@ You are an advanced AI assistant specialized in producing comprehensive, structu
  
         #Extract Keywords
         keyword_prompt = "Extract the keywords from the following text: " + overall_summary
-        keywords = summary.generate_prompt(keyword_prompt,"You are an AI Assistant that extracts keywords and themes. Do not provide any other statements other than the keywords and themes only. Extract a max of 25 key words. Ensure they make sense and aren't dates like years. For example do not ever add years like 'xxxx-xxxx' where x are numbers",aoai_key, aoai_url, model, aoai_version_completion)
+        keywords = summary.generate_prompt(keyword_prompt,"You are an AI Assistant that extracts keywords and themes. Do not provide any other statements other than the keywords and themes only. Extract a max of 8 key words. Ensure they make sense and aren't dates like years. For example do not ever add years like 'xxxx-xxxx' where x are numbers",aoai_key, aoai_url, model, aoai_version_completion)
 
         # Build the final knowledge scan response
         knowledge_scan = {
