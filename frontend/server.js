@@ -4,7 +4,7 @@ const app = express();
 const axios = require('axios');
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'dist', 'frontend', 'browser')));
+app.use(express.static(path.join(__dirname, 'dist', 'frontend')));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -67,7 +67,7 @@ app.post('/api/generate-synthesis', async (req, res) => {
 
 // Catch-all handler for Angular routing
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'dist', 'frontend', 'browser', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'frontend', 'index.html'));
 });
 
 // Start the server
